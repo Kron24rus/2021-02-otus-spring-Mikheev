@@ -1,0 +1,5 @@
+spring:
+  messages:
+    basename: i18n/messages
+
+csv-questions-path: csv/questions.csv
