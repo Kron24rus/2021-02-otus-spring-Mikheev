@@ -1,4 +1,4 @@
-id,question,responses,correct
+id,question,answers,correct
 1,question1,resp1|resp2|resp3,resp1
 2,question2,resp1|resp2|resp3,resp1
 3,question3,resp1|resp2|resp3,resp1

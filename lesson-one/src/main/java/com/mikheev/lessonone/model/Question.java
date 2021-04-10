@@ -12,13 +12,13 @@ public class Question {
     @CsvBindByName(column = "question")
     private String question;
 
-    @CsvBindByName(column = "responses")
-    private String responsesString;
+    @CsvBindByName(column = "answers")
+    private String answersString;
 
     @CsvBindByName(column = "correct")
     private String correct;
 
-    private List<Response> responses;
+    private List<Answer> answers;
 
     public long getId() {
         return id;
@@ -36,12 +36,12 @@ public class Question {
         this.question = question;
     }
 
-    public String getResponsesString() {
-        return responsesString;
+    public String getAnswersString() {
+        return answersString;
     }
 
-    public void setResponsesString(String responsesString) {
-        this.responsesString = responsesString;
+    public void setAnswersString(String answersString) {
+        this.answersString = answersString;
     }
 
     public String getCorrect() {
@@ -52,12 +52,12 @@ public class Question {
         this.correct = correct;
     }
 
-    public List<Response> getResponses() {
-        return responses;
+    public List<Answer> getAnswers() {
+        return answers;
     }
 
-    public void setResponses(List<Response> responses) {
-        this.responses = responses;
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Question {
                 "id=" + id +
                 ", question='" + question + '\'' +
                 ", correct='" + correct + '\'' +
-                ", responses=" + responses +
+                ", answers=" + answers +
                 '}';
     }
 }

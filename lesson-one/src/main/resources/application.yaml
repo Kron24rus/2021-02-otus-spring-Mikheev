@@ -2,4 +2,12 @@ spring:
   messages:
     basename: i18n/messages
 
-csv-questions-path: csv/questions.csv
+questionnaire:
+  csv-paths:
+    - csv/questions_ru.csv
+    - csv/questions.csv
+  csv-files:
+    - locale: default
+      path: csv/questions.csv
+    - locale: ru_RU
+      path: csv/questions_ru.csv
