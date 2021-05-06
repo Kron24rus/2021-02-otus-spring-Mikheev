@@ -1,16 +1,39 @@
 package com.mikheev.homeworkfive.domain;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-@RequiredArgsConstructor
+import javax.persistence.*;
+import java.util.List;
+
 @Data
+@Entity
+@Table(name = "books")
 public class Book {
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "title")
     private String title;
+
+    @ManyToOne(targetEntity = Author.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
     private Author author;
+
+    @ManyToOne(targetEntity = Genre.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "genre_id")
     private Genre genre;
+
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "book_id")
+    private List<Comment> comments;
+
+    public Book() {
+    }
 
     public Book(String title, Author author, Genre genre) {
         this.title = title;
@@ -18,40 +41,13 @@ public class Book {
         this.genre = genre;
     }
 
-    public Book(long id, String title) {
-        this.id = id;
-        this.title = title;
-    }
-
-    public Book(long id, String title, Genre genre) {
-        this.id = id;
-        this.title = title;
-        this.genre = genre;
-    }
-
-    public Book(long id, String title, Author author, Genre genre) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.genre = genre;
-    }
-
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 31 * hash + (int) id;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object == null || this.getClass() != object.getClass()) {
-            return false;
-        }
-        Book otherBook = (Book)object;
-        return otherBook.getId() == this.id;
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", genre=" + genre +
+                '}';
     }
 }

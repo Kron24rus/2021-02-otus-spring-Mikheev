@@ -1,22 +1,25 @@
 package com.mikheev.homeworkfive.domain;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
 
-@RequiredArgsConstructor
 @Data
+@Entity
+@Table(name = "authors")
 public class Author {
 
-    private long id;
-    private final String name;
-    private Set<Book> books;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Author(long id, String name) {
-        this.id = id;
+    @Column(name = "name")
+    private String name;
+
+    public Author() {
+    }
+
+    public Author(String name) {
         this.name = name;
-        this.books = new HashSet<>();
     }
 }

@@ -19,4 +19,14 @@ public interface LibraryService {
     String deleteBook(long id);
 
     String updateBook(long id, String title, Long author_id, Long genre_id);
+
+    String displayBookComments(long id);
+
+    String addComment(long bookId, String text);
+
+    String updateComment(long commentId, String text);
+
+    String deleteComment(long commentId);
+
+    String copyComment(long commentId, long bookId);
 }

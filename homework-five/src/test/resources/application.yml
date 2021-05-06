@@ -4,3 +4,12 @@ spring:
     initialization-mode: always
     data: data-test.sql
     schema: schema.sql
+
+  jpa:
+    generate-ddl: false
+    #generate-ddl: true
+    hibernate:
+      ddl-auto: none
+      #ddl-auto: create-drop
+
+    #show-sql: true

@@ -12,7 +12,7 @@
     <artifactId>homework-five</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>homework-five</name>
-    <description>Homework five: JDBC</description>
+    <description>Homework six: ORM</description>
     <properties>
         <java.version>11</java.version>
         <spring.shell.version>2.0.1.RELEASE</spring.shell.version>
@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -47,6 +47,21 @@
             <groupId>org.springframework.shell</groupId>
             <artifactId>spring-shell-starter</artifactId>
             <version>${spring.shell.version}</version>
+        </dependency>
+
+        <!--Тестирование-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

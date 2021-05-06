@@ -4,22 +4,22 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Data
 @Entity
-@Table(name = "genres")
-public class Genre {
+@Table(name = "comments")
+@Data
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "text")
+    private String text;
 
-    public Genre() {
+    public Comment() {
     }
 
-    public Genre(String name) {
-        this.name = name;
+    public Comment(String text) {
+        this.text = text;
     }
 }
