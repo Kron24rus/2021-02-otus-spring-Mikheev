@@ -23,7 +23,7 @@ public class CommentServiceImpl implements CommentService {
         this.bookRepository = bookRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public String displayBookComments(long id) {
         List<Comment> comments = commentRepository.findCommentsByBookId(id);
