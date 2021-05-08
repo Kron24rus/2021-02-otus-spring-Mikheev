@@ -21,7 +21,7 @@ class BookRepositoryImplTest {
 
     private static final long BOOK_ID = 1L;
     private static final int EXPECTED_NUMBER_OF_BOOKS = 3;
-    private static final int EXPECTED_QUERIES_COUNT = 2;
+    private static final int EXPECTED_QUERIES_COUNT = 1;
     private static final String EXPECTED_BOOK_TITLE = "expectedBookTitle";
     private static final long EXPECTED_BOOK_ID = 3;
     private static final String GENRE_DETECTIVE = "detective";
@@ -58,8 +58,7 @@ class BookRepositoryImplTest {
         assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
                 .allMatch(book -> !book.getTitle().isEmpty())
                 .allMatch(book -> book.getAuthor() != null)
-                .allMatch(book -> book.getGenre() != null)
-                .allMatch(book -> book.getComments() != null && book.getComments().size() > 0);
+                .allMatch(book -> book.getGenre() != null);
 
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
     }
@@ -87,7 +86,9 @@ class BookRepositoryImplTest {
         book.setTitle(EXPECTED_BOOK_TITLE);
         book.setGenre(genre);
 
-        Book savedBook = bookRepository.save(book);
+        bookRepository.save(book);
+        Book savedBook = entityManager.find(Book.class, BOOK_ID);
+
         assertThat(savedBook.getTitle()).isEqualTo(EXPECTED_BOOK_TITLE);
         assertThat(savedBook.getGenre()).usingRecursiveComparison().isEqualTo(genre);
         assertThat(savedBook.getId()).isEqualTo(BOOK_ID);
@@ -97,6 +98,7 @@ class BookRepositoryImplTest {
     void deleteBook_success() {
         Book book = entityManager.find(Book.class, BOOK_ID);
         assertThat(book).isNotNull();
+        entityManager.detach(book);
 
         bookRepository.deleteById(BOOK_ID);
 

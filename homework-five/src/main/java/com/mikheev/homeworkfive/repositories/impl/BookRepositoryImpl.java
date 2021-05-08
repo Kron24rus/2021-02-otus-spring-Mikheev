@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +40,8 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void deleteById(long id) {
-        Book book = em.find(Book.class, id);
-        em.remove(book);
+        Query query = em.createQuery("delete from Book b where b.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 }

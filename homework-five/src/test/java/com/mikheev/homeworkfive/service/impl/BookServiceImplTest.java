@@ -5,18 +5,14 @@ import com.mikheev.homeworkfive.domain.Book;
 import com.mikheev.homeworkfive.domain.Genre;
 import com.mikheev.homeworkfive.repositories.AuthorRepository;
 import com.mikheev.homeworkfive.repositories.BookRepository;
-import com.mikheev.homeworkfive.repositories.CommentRepository;
 import com.mikheev.homeworkfive.repositories.GenreRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
@@ -24,12 +20,9 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(properties = {
-        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
-@EnableAutoConfiguration(exclude = {HibernateJpaAutoConfiguration.class, DataSourceAutoConfiguration.class})
-class LibraryServiceImplTest {
+@ExtendWith(SpringExtension.class)
+@Import(BookServiceImpl.class)
+class BookServiceImplTest {
 
     private static final long ENTITY_ID = 153;
     private static final String ENTITY_NAME = "entityName";
@@ -45,15 +38,13 @@ class LibraryServiceImplTest {
     private AuthorRepository authorRepository;
     @MockBean
     private GenreRepository genreRepository;
-    @MockBean
-    private CommentRepository commentRepository;
 
     @Autowired
-    private LibraryServiceImpl libraryService;
+    private BookServiceImpl bookService;
 
     @Test
     void displayAllBooks() {
-        String responseMessage = libraryService.displayAllBooks();
+        String responseMessage = bookService.displayAllBooks();
         Mockito.verify(bookRepository, times(1)).findAll();
         assertThat(responseMessage).contains("Books in data base");
     }
@@ -65,7 +56,7 @@ class LibraryServiceImplTest {
         book.setId(ENTITY_ID);
         Optional<Book> optionalBook = Optional.of(book);
         when(bookRepository.findById(ENTITY_ID)).thenReturn(optionalBook);
-        String responseMessage = libraryService.displayBookWithId(ENTITY_ID);
+        String responseMessage = bookService.displayBookWithId(ENTITY_ID);
         assertThat(responseMessage).contains("Book with id: " + ENTITY_ID);
     }
 
@@ -82,7 +73,7 @@ class LibraryServiceImplTest {
         when(authorRepository.findById(AUTHOR_ID)).thenReturn(optionalAuthor);
         when(genreRepository.findById(GENRE_ID)).thenReturn(optionalGenre);
         when(bookRepository.save(newBook)).thenReturn(savedBook);
-        String insertMessage = libraryService.addBook(ENTITY_NAME, AUTHOR_ID, GENRE_ID);
+        String insertMessage = bookService.addBook(ENTITY_NAME, AUTHOR_ID, GENRE_ID);
         Mockito.verify(bookRepository, times(1)).save(newBook);
         assertThat(insertMessage).isEqualTo("Adding new book: Inserted with id - " + ENTITY_ID);
     }
@@ -94,13 +85,13 @@ class LibraryServiceImplTest {
         Optional<Genre> optionalGenre = Optional.of(genre);
         when(authorRepository.findById(AUTHOR_ID)).thenReturn(optionalAuthor);
         when(genreRepository.findById(GENRE_ID)).thenReturn(optionalGenre);
-        String insertMessage = libraryService.addBook(ENTITY_NAME, AUTHOR_ID, GENRE_ID);
-        assertThat(insertMessage).isEqualTo("Adding new book: Author with id " + AUTHOR_ID + " not found. ");
+        String insertMessage = bookService.addBook(ENTITY_NAME, AUTHOR_ID, GENRE_ID);
+        assertThat(insertMessage).isEqualTo("Adding new book: Author with id: " + AUTHOR_ID + " not found. ");
     }
 
     @Test
     void deleteBook_messageWithCorrectIdReturned() {
-        String deleteMessage = libraryService.deleteBook(ENTITY_ID);
+        String deleteMessage = bookService.deleteBook(ENTITY_ID);
         Mockito.verify(bookRepository, times(1)).deleteById(ENTITY_ID);
         assertThat(deleteMessage).isEqualTo("Book with id: " + ENTITY_ID + " removed from database");
     }
@@ -126,7 +117,7 @@ class LibraryServiceImplTest {
         when(bookRepository.findById(ENTITY_ID)).thenReturn(optionalBook);
         when(authorRepository.findById(NEW_AUTHOR_ID)).thenReturn(optionalAuthor);
         when(genreRepository.findById(NEW_GENRE_ID)).thenReturn(optionalGenre);
-        String updateMessage = libraryService.updateBook(ENTITY_ID, NEW_ENTITY_NAME, NEW_AUTHOR_ID, NEW_GENRE_ID);
+        String updateMessage = bookService.updateBook(ENTITY_ID, NEW_ENTITY_NAME, NEW_AUTHOR_ID, NEW_GENRE_ID);
         Mockito.verify(bookRepository, times(1)).save(book);
         assertThat(book.getTitle()).isEqualTo(NEW_ENTITY_NAME);
         assertThat(updateMessage).contains("Book updated");
